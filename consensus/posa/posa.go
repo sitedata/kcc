@@ -832,7 +832,7 @@ func (c *POSA) updateValidators(chain consensus.ChainHeaderReader, header *types
 
 		// method
 		method := "updateActiveValidatorSet"
-		data, err := c.abi[IshikariValidatorsContractName].Pack(method, newValidators, new(big.Int).SetUint64(c.config.Epoch))
+		data, err := c.abi[IshikariValidatorsContractName].Pack(method, newValidators)
 		if err != nil {
 			log.Error("Can't pack data for updateActiveValidatorSet", "error", err)
 			return err
@@ -898,23 +898,48 @@ func (c *POSA) punishValidator(val common.Address, chain consensus.ChainHeaderRe
 }
 
 func (c *POSA) decreaseMissedBlocksCounter(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB) error {
-	// method
-	method := "decreaseMissedBlocksCounter"
-	data, err := c.abi[punishContractName].Pack(method, new(big.Int).SetUint64(c.config.Epoch))
-	if err != nil {
-		log.Error("Can't pack data for decreaseMissedBlocksCounter", "error", err)
-		return err
+
+	if c.chainConfig.IsKCCIshikari(header.Number) {
+
+		// method
+		method := "decreaseMissedBlocksCounter"
+		data, err := c.abi[IshikariPunishContractName].Pack(method)
+		if err != nil {
+			log.Error("Can't pack data for decreaseMissedBlocksCounter", "error", err)
+			return err
+		}
+
+		// call contract
+		nonce := state.GetNonce(header.Coinbase)
+		msg := types.NewMessage(header.Coinbase, &IshikariPunishContractAddr, nonce, new(big.Int), math.MaxUint64, new(big.Int), data, nil, true)
+		if _, err := executeMsg(msg, state, header, newChainContext(chain, c), c.chainConfig); err != nil {
+			log.Error("Can't decrease missed blocks counter for validator", "err", err)
+			return err
+		}
+
+		return nil
+
+	} else {
+
+		// method
+		method := "decreaseMissedBlocksCounter"
+		data, err := c.abi[punishContractName].Pack(method, new(big.Int).SetUint64(c.config.Epoch))
+		if err != nil {
+			log.Error("Can't pack data for decreaseMissedBlocksCounter", "error", err)
+			return err
+		}
+
+		// call contract
+		nonce := state.GetNonce(header.Coinbase)
+		msg := types.NewMessage(header.Coinbase, &punishContractAddr, nonce, new(big.Int), math.MaxUint64, new(big.Int), data, nil, true)
+		if _, err := executeMsg(msg, state, header, newChainContext(chain, c), c.chainConfig); err != nil {
+			log.Error("Can't decrease missed blocks counter for validator", "err", err)
+			return err
+		}
+
+		return nil
 	}
 
-	// call contract
-	nonce := state.GetNonce(header.Coinbase)
-	msg := types.NewMessage(header.Coinbase, &punishContractAddr, nonce, new(big.Int), math.MaxUint64, new(big.Int), data, nil, true)
-	if _, err := executeMsg(msg, state, header, newChainContext(chain, c), c.chainConfig); err != nil {
-		log.Error("Can't decrease missed blocks counter for validator", "err", err)
-		return err
-	}
-
-	return nil
 }
 
 // Authorize injects a private key into the consensus engine to mint new blocks
@@ -1093,7 +1118,7 @@ func (c *POSA) initializeSystemContractsIshikari(chain consensus.ChainHeaderRead
 		return errInvalidValidatorsLength
 	}
 
-	for _, contract := range getIshikariSystemContracts(c.abi, c.config.IshikariInitialValidators, c.config.IshikariInitialManagers, c.config.IshikariAdminMultiSig) {
+	for _, contract := range getIshikariSystemContracts(c.abi, c.config.IshikariInitialValidators, c.config.IshikariInitialManagers, c.config.IshikariAdminMultiSig, big.NewInt(int64(c.config.Epoch))) {
 
 		state.SetCode(contract.addr, contract.code)
 

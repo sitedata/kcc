@@ -254,6 +254,19 @@ const IshikariProposalABI = `
   },
   {
     "inputs": [],
+    "name": "EPOCH",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "MAX_VALIDATORS",
     "outputs": [
       {
@@ -412,6 +425,11 @@ const IshikariProposalABI = `
         "internalType": "address",
         "name": "_reservePool",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_epoch",
+        "type": "uint256"
       }
     ],
     "name": "initialize",
@@ -643,256 +661,274 @@ const IshikariProposalABI = `
 
 const IshikariReservePoolABI = `
 [
-	{
-	  "inputs": [],
-	  "stateMutability": "nonpayable",
-	  "type": "constructor"
-	},
-	{
-	  "anonymous": false,
-	  "inputs": [
-		{
-		  "indexed": true,
-		  "internalType": "address",
-		  "name": "actor",
-		  "type": "address"
-		},
-		{
-		  "indexed": false,
-		  "internalType": "uint256",
-		  "name": "amount",
-		  "type": "uint256"
-		}
-	  ],
-	  "name": "Deposit",
-	  "type": "event"
-	},
-	{
-	  "anonymous": false,
-	  "inputs": [
-		{
-		  "indexed": true,
-		  "internalType": "address",
-		  "name": "actor",
-		  "type": "address"
-		},
-		{
-		  "indexed": false,
-		  "internalType": "uint256",
-		  "name": "amount",
-		  "type": "uint256"
-		}
-	  ],
-	  "name": "Withdraw",
-	  "type": "event"
-	},
-	{
-	  "inputs": [],
-	  "name": "MAX_BLOCK_REWARD_AMOUNT",
-	  "outputs": [
-		{
-		  "internalType": "uint256",
-		  "name": "",
-		  "type": "uint256"
-		}
-	  ],
-	  "stateMutability": "view",
-	  "type": "function"
-	},
-	{
-	  "inputs": [],
-	  "name": "MAX_VALIDATORS",
-	  "outputs": [
-		{
-		  "internalType": "uint16",
-		  "name": "",
-		  "type": "uint16"
-		}
-	  ],
-	  "stateMutability": "view",
-	  "type": "function"
-	},
-	{
-	  "inputs": [],
-	  "name": "PROPOSAL_CONTRACT",
-	  "outputs": [
-		{
-		  "internalType": "contract IProposal",
-		  "name": "",
-		  "type": "address"
-		}
-	  ],
-	  "stateMutability": "view",
-	  "type": "function"
-	},
-	{
-	  "inputs": [],
-	  "name": "PUBLISH_CONTRACT",
-	  "outputs": [
-		{
-		  "internalType": "contract IPunish",
-		  "name": "",
-		  "type": "address"
-		}
-	  ],
-	  "stateMutability": "view",
-	  "type": "function"
-	},
-	{
-	  "inputs": [],
-	  "name": "RESERVEPOOL_CONTRACT",
-	  "outputs": [
-		{
-		  "internalType": "contract IReservePool",
-		  "name": "",
-		  "type": "address"
-		}
-	  ],
-	  "stateMutability": "view",
-	  "type": "function"
-	},
-	{
-	  "inputs": [],
-	  "name": "VALIDATOR_CONTRACT",
-	  "outputs": [
-		{
-		  "internalType": "contract IValidators",
-		  "name": "",
-		  "type": "address"
-		}
-	  ],
-	  "stateMutability": "view",
-	  "type": "function"
-	},
-	{
-	  "inputs": [],
-	  "name": "admin",
-	  "outputs": [
-		{
-		  "internalType": "address",
-		  "name": "",
-		  "type": "address"
-		}
-	  ],
-	  "stateMutability": "view",
-	  "type": "function"
-	},
-	{
-	  "inputs": [],
-	  "name": "blockRewardAmount",
-	  "outputs": [
-		{
-		  "internalType": "uint256",
-		  "name": "",
-		  "type": "uint256"
-		}
-	  ],
-	  "stateMutability": "view",
-	  "type": "function"
-	},
-	{
-	  "inputs": [
-		{
-		  "internalType": "address",
-		  "name": "_admin",
-		  "type": "address"
-		}
-	  ],
-	  "name": "changeAdmin",
-	  "outputs": [],
-	  "stateMutability": "nonpayable",
-	  "type": "function"
-	},
-	{
-	  "inputs": [
-		{
-		  "internalType": "address",
-		  "name": "_admin",
-		  "type": "address"
-		},
-		{
-		  "internalType": "address",
-		  "name": "_validatorsContract",
-		  "type": "address"
-		},
-		{
-		  "internalType": "address",
-		  "name": "_punishContract",
-		  "type": "address"
-		},
-		{
-		  "internalType": "address",
-		  "name": "_proposalContract",
-		  "type": "address"
-		},
-		{
-		  "internalType": "address",
-		  "name": "_reservePool",
-		  "type": "address"
-		}
-	  ],
-	  "name": "initialize",
-	  "outputs": [],
-	  "stateMutability": "nonpayable",
-	  "type": "function"
-	},
-	{
-	  "inputs": [
-		{
-		  "internalType": "uint256",
-		  "name": "amount",
-		  "type": "uint256"
-		}
-	  ],
-	  "name": "setBlockRewardAmount",
-	  "outputs": [],
-	  "stateMutability": "nonpayable",
-	  "type": "function"
-	},
-	{
-	  "inputs": [
-		{
-		  "internalType": "enum ReservePool.State",
-		  "name": "newState",
-		  "type": "uint8"
-		}
-	  ],
-	  "name": "setState",
-	  "outputs": [],
-	  "stateMutability": "nonpayable",
-	  "type": "function"
-	},
-	{
-	  "inputs": [],
-	  "name": "state",
-	  "outputs": [
-		{
-		  "internalType": "enum ReservePool.State",
-		  "name": "",
-		  "type": "uint8"
-		}
-	  ],
-	  "stateMutability": "view",
-	  "type": "function"
-	},
-	{
-	  "inputs": [],
-	  "name": "withdrawBlockReward",
-	  "outputs": [
-		{
-		  "internalType": "uint256",
-		  "name": "",
-		  "type": "uint256"
-		}
-	  ],
-	  "stateMutability": "nonpayable",
-	  "type": "function"
-	},
-	{
-	  "stateMutability": "payable",
-	  "type": "receive"
-	}
-  ]
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "actor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Deposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "actor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Withdraw",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "EPOCH",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_BLOCK_REWARD_AMOUNT",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_VALIDATORS",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "PROPOSAL_CONTRACT",
+    "outputs": [
+      {
+        "internalType": "contract IProposal",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "PUBLISH_CONTRACT",
+    "outputs": [
+      {
+        "internalType": "contract IPunish",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "RESERVEPOOL_CONTRACT",
+    "outputs": [
+      {
+        "internalType": "contract IReservePool",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "VALIDATOR_CONTRACT",
+    "outputs": [
+      {
+        "internalType": "contract IValidators",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "admin",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "blockRewardAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_admin",
+        "type": "address"
+      }
+    ],
+    "name": "changeAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_admin",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_validatorsContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_punishContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_proposalContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_reservePool",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_epoch",
+        "type": "uint256"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "setBlockRewardAmount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum ReservePool.State",
+        "name": "newState",
+        "type": "uint8"
+      }
+    ],
+    "name": "setState",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "state",
+    "outputs": [
+      {
+        "internalType": "enum ReservePool.State",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdrawBlockReward",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  }
+]
 `
 
 const IshikariPunishABI = `
@@ -921,6 +957,19 @@ const IshikariPunishABI = `
     ],
     "name": "LogPunishValidator",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "EPOCH",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -1014,13 +1063,7 @@ const IshikariPunishABI = `
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_epoch",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "name": "decreaseMissedBlocksCounter",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -1097,6 +1140,11 @@ const IshikariPunishABI = `
         "internalType": "address",
         "name": "_admin",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_epoch",
+        "type": "uint256"
       }
     ],
     "name": "initialize",
@@ -1173,38 +1221,13 @@ const IshikariValidatorABI = `
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "pid",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "feeShares",
-        "type": "uint256"
-      }
-    ],
-    "name": "AddValidatorPool",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
         "name": "validator",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "feeReward",
+        "name": "amount",
         "type": "uint256"
       }
     ],
@@ -1267,23 +1290,54 @@ const IshikariValidatorABI = `
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "_validator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_manager",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "reward1",
+        "name": "_feeShares",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "_reused",
+        "type": "bool"
+      }
+    ],
+    "name": "NewValidatorAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_validator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_blocknum",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "reward2",
+        "name": "_amount",
         "type": "uint256"
       }
     ],
-    "name": "NotifyReward",
+    "name": "PunishValidator",
     "type": "event"
   },
   {
@@ -1291,18 +1345,18 @@ const IshikariValidatorABI = `
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "inputLength",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "okLength",
+        "name": "_amount",
         "type": "uint256"
       }
     ],
-    "name": "NotifyRewardSummary",
+    "name": "ReceiveKCS",
     "type": "event"
   },
   {
@@ -1390,56 +1444,6 @@ const IshikariValidatorABI = `
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "RoleGranted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "RoleRevoked",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": false,
         "internalType": "uint256",
         "name": "duration",
@@ -1455,23 +1459,30 @@ const IshikariValidatorABI = `
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "_validator",
         "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "pid",
-        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "shares",
+        "name": "_feeShares",
         "type": "uint256"
       }
     ],
     "name": "SetFeeShares",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "duration",
+        "type": "uint256"
+      }
+    ],
+    "name": "SetMarginLockingDuration",
     "type": "event"
   },
   {
@@ -1603,12 +1614,12 @@ const IshikariValidatorABI = `
   },
   {
     "inputs": [],
-    "name": "DEFAULT_ADMIN_ROLE",
+    "name": "EPOCH",
     "outputs": [
       {
-        "internalType": "bytes32",
+        "internalType": "uint256",
         "name": "",
-        "type": "bytes32"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1928,6 +1939,25 @@ const IshikariValidatorABI = `
         "type": "address"
       }
     ],
+    "name": "getPoolManager",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "val",
+        "type": "address"
+      }
+    ],
     "name": "getPoolSelfBallots",
     "outputs": [
       {
@@ -2149,68 +2179,6 @@ const IshikariValidatorABI = `
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      }
-    ],
-    "name": "getRoleAdmin",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "index",
-        "type": "uint256"
-      }
-    ],
-    "name": "getRoleMember",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      }
-    ],
-    "name": "getRoleMemberCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "getTopValidators",
     "outputs": [
@@ -2280,55 +2248,19 @@ const IshikariValidatorABI = `
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_manager",
+        "type": "address"
+      }
+    ],
     "name": "getValidatorsOfManager",
     "outputs": [
       {
         "internalType": "address[]",
         "name": "",
         "type": "address[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "grantRole",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "hasRole",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -2375,6 +2307,11 @@ const IshikariValidatorABI = `
         "internalType": "address",
         "name": "_reservePool",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_epoch",
+        "type": "uint256"
       }
     ],
     "name": "initialize",
@@ -2568,24 +2505,6 @@ const IshikariValidatorABI = `
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "renounceRole",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "revokeLockingDuration",
     "outputs": [
@@ -2596,24 +2515,6 @@ const IshikariValidatorABI = `
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "revokeRole",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -2695,6 +2596,11 @@ const IshikariValidatorABI = `
         "internalType": "uint256",
         "name": "_shares",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_val",
+        "type": "address"
       }
     ],
     "name": "setFeeSharesOfValidator",
@@ -2791,11 +2697,6 @@ const IshikariValidatorABI = `
         "internalType": "address[]",
         "name": "newSet",
         "type": "address[]"
-      },
-      {
-        "internalType": "uint256",
-        "name": "epoch",
-        "type": "uint256"
       }
     ],
     "name": "updateActiveValidatorSet",
