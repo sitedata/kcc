@@ -88,21 +88,23 @@ var (
 		CVE_2021_39137Block: big.NewInt(0),
 
 		// @cary the block when hardfork happens.
-		IshikariBlock: big.NewInt(9477099),
+		IshikariBlock: big.NewInt(11321699),
 		POSA: &POSAConfig{
 			Period: 3,
 			Epoch:  100,
 			IshikariInitialValidators: []common.Address{
-				common.HexToAddress("5484ff708a42cc74e2fefcc2197f18d77d9f4ad4"),
-				common.HexToAddress("9fd8d35816cd9e20de319dd64dca0259d1a53b4b"),
-				common.HexToAddress("0de1b87c84e94813caffb8fec3caf6b78e9d1100"),
+				common.HexToAddress("0x20b9a60c5a2137259ce81e45a1310a754270753b"),
+				common.HexToAddress("0xe40c3ef8dc2dd6d3edecd8ebdc64a6b68f530589"),
+				common.HexToAddress("0xce7878e800408d60e7b55d7d5c56519f329a77fc"),
+				common.HexToAddress("0xbf8144aa88bea302548f51b3d776b8b7e4453449"),
 			}, //@cary: the initial validators for Ishikari hardfork
 			IshikariInitialManagers: []common.Address{
-				common.HexToAddress("1c0e983a3853658f5b5aa46d9772ef929ae64b90"),
-				common.HexToAddress("1c0e983a3853658f5b5aa46d9772ef929ae64b90"),
-				common.HexToAddress("1c0e983a3853658f5b5aa46d9772ef929ae64b90"),
+				common.HexToAddress("0xc6C450C46F71AD568d8BfA16Ca597906eb017c71"),
+				common.HexToAddress("0x9E207e1e0BB946d676fA5c86ed95cC997d6A6369"),
+				common.HexToAddress("0x0B3c112e1dc42487302d3d8b5c0A714Ec5BeBe27"),
+				common.HexToAddress("0x6862F46C4cf0E4ECCE9186651637F4c692015A7c"),
 			},
-			IshikariAdminMultiSig: common.HexToAddress("1c0e983a3853658f5b5aa46d9772ef929ae64b90"), // @cary: the multisig address for admin
+			IshikariAdminMultiSig: common.HexToAddress("0x22e4A5dfFee45CeaBd4d7c45814BfC27dF3776b4"), // @cary: the multisig address for admin
 		},
 	}
 
